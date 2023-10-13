@@ -53,4 +53,8 @@ public class User {
 		this.email = email;
 	}
 
+	public List<Post> getPosts() {
+		return posts;
+	}
+
 }
