@@ -1,7 +1,6 @@
 package com.bittsoftware.springbootmongosample.services;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,8 +22,7 @@ public class UserService {
 	}
 
 	public UserDTO findById(String id) {
-		Optional<User> user = repository.findById(id);
-		User entity = user.orElseThrow(() -> new ResourceNotFoundException("Objeto não encontrado"));
+		User entity = repository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Objeto não encontrado"));
 		return new UserDTO(entity);
 	}
 
@@ -40,6 +38,11 @@ public class UserService {
 		copyDtoToEntity(dto, user);
 		user = repository.save(user);
 		return new UserDTO(user);
+	}
+
+	public void delete(String id) {
+		repository.delete(
+				repository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Objeto não encontrado")));
 	}
 
 	private void copyDtoToEntity(UserDTO dto, User entity) {
