@@ -6,6 +6,7 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.bittsoftware.springbootmongosample.models.dto.PostDTO;
 import com.bittsoftware.springbootmongosample.models.dto.UserDTO;
 import com.bittsoftware.springbootmongosample.models.entities.User;
 import com.bittsoftware.springbootmongosample.repositories.UserRepository;
@@ -43,6 +44,11 @@ public class UserService {
 	public void delete(String id) {
 		repository.delete(
 				repository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Objeto não encontrado")));
+	}
+
+	public List<PostDTO> getUserPosts(String id) {
+		User user = repository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Objeto não encontrado"));
+		return user.getPosts().stream().map(post -> new PostDTO(post)).collect(Collectors.toList());
 	}
 
 	private void copyDtoToEntity(UserDTO dto, User entity) {
