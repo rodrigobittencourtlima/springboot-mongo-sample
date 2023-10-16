@@ -23,7 +23,7 @@ public class PostService {
 	}
 
 	public List<PostDTO> findByTitle(String title) {
-		List<Post> posts = repository.findByTitleContainingIgnoreCase(title);
+		List<Post> posts = repository.searchTitle(title);
 		return posts.stream().map(post -> new PostDTO(post)).collect(Collectors.toList());
 	}
 }
