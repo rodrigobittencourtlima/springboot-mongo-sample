@@ -1,5 +1,8 @@
 package com.bittsoftware.springbootmongosample.services;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,5 +20,10 @@ public class PostService {
 	public PostDTO findById(String id) {
 		Post entity = repository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Objeto não encontrado"));
 		return new PostDTO(entity);
+	}
+
+	public List<PostDTO> findByTitle(String title) {
+		List<Post> posts = repository.findByTitleContainingIgnoreCase(title);
+		return posts.stream().map(post -> new PostDTO(post)).collect(Collectors.toList());
 	}
 }
